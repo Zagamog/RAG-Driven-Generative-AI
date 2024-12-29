@@ -1,0 +1,1530 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{datetime}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Keep aspect ratio if custom image width or height is specified
+    \setkeys{Gin}{keepaspectratio}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{soul}      % strikethrough (\st) support for pandoc >= 3.0.0
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title and date
+    \title{RAG\_Rothman: Chapter 1: Overview}
+    \date{\today\ at\ \currenttime} % Automatically include current date and time
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@ges}{\let\PY@bf=\textbf\let\PY@it=\textit}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \#Introducing Naive, Advanced, and Modular RAG
+
+Copyright 2024, Denis Rothman
+
+This notebook introduces Naïve, Advanced, and Modular RAG through basic
+educational examples.
+
+The Naïve, Advanced and modular RAG techniques offer flexibility in
+selecting retrieval strategies, allowing adaptation to various tasks and
+data characteristics.
+
+\textbf{Summary}
+
+\textbf{Part 1: Foundations and Basic Implementation}
+
+1.Environment setup for OpenAI API integration\\
+2.Generator function using GPT models\\
+3.Dataetup with a list of documents (db\_records)\\
+4.Query(user request)
+
+\textbf{Part 2: Advanced Techniques and Evaluation}
+
+1.Retrieval metrics\\
+2.Naive RAG\\
+3.Advanced RAG\\
+4.Modular RAG Retriever
+
+    \section{Part 1: Foundations and Basic
+Implementation}\label{part-1-foundations-and-basic-implementation}
+
+    \section{1.The Environment}\label{the-environment}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+ch}{\PYZsh{}!pip install openai==1.40.3}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}API Key}
+\PY{c+c1}{\PYZsh{}Store you key in a file and read it(you can type it directly in the notebook but it will be visible for somebody next to you)}
+\PY{c+c1}{\PYZsh{}from google.colab import drive}
+\PY{c+c1}{\PYZsh{}drive.mount(\PYZsq{}/content/drive\PYZsq{})}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}f = open(\PYZdq{}drive/MyDrive/files/api\PYZus{}key.txt\PYZdq{}, \PYZdq{}r\PYZdq{})}
+\PY{c+c1}{\PYZsh{}API\PYZus{}KEY=f.readline().strip()}
+\PY{c+c1}{\PYZsh{}f.close()}
+
+
+\PY{c+c1}{\PYZsh{}The OpenAI Key}
+\PY{k+kn}{import} \PY{n+nn}{os}
+\PY{k+kn}{from} \PY{n+nn}{dotenv} \PY{k+kn}{import} \PY{n}{load\PYZus{}dotenv}
+\PY{k+kn}{import} \PY{n+nn}{openai}
+
+\PY{c+c1}{\PYZsh{} Load API Key}
+\PY{n}{dotenv\PYZus{}path} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{D:/AdvancedR/knowbankedu/openai/.env}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{load\PYZus{}dotenv}\PY{p}{(}\PY{n}{dotenv\PYZus{}path}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} OpenAI API Key}
+\PY{n}{openai}\PY{o}{.}\PY{n}{api\PYZus{}key} \PY{o}{=} \PY{n}{os}\PY{o}{.}\PY{n}{getenv}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{OPENAI\PYZus{}API\PYZus{}KEY}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \section{2.The Generator}\label{the-generator}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{openai}
+\PY{k+kn}{from} \PY{n+nn}{openai} \PY{k+kn}{import} \PY{n}{OpenAI}
+
+\PY{n}{client} \PY{o}{=} \PY{n}{OpenAI}\PY{p}{(}\PY{p}{)}
+\PY{n}{gptmodel}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{gpt\PYZhy{}4o}\PY{l+s+s2}{\PYZdq{}}
+
+\PY{k}{def} \PY{n+nf}{call\PYZus{}llm\PYZus{}with\PYZus{}full\PYZus{}text}\PY{p}{(}\PY{n}{itext}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} Join all lines to form a single string}
+    \PY{n}{text\PYZus{}input} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{n}{itext}\PY{p}{)}
+    \PY{n}{prompt} \PY{o}{=} \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Please elaborate on the following content:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+si}{\PYZob{}}\PY{n}{text\PYZus{}input}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}
+
+    \PY{k}{try}\PY{p}{:}
+      \PY{n}{response} \PY{o}{=} \PY{n}{client}\PY{o}{.}\PY{n}{chat}\PY{o}{.}\PY{n}{completions}\PY{o}{.}\PY{n}{create}\PY{p}{(}
+         \PY{n}{model}\PY{o}{=}\PY{n}{gptmodel}\PY{p}{,}
+         \PY{n}{messages}\PY{o}{=}\PY{p}{[}
+            \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{role}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{system}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{content}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{You are an expert Natural Language Processing exercise expert.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{,}
+            \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{role}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{assistant}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{content}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{1.You can explain read the input and answer in detail}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{,}
+            \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{role}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{user}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{content}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{prompt}\PY{p}{\PYZcb{}}
+         \PY{p}{]}\PY{p}{,}
+         \PY{n}{temperature}\PY{o}{=}\PY{l+m+mf}{0.1}  \PY{c+c1}{\PYZsh{} Add the temperature parameter here and other parameters you need}
+        \PY{p}{)}
+      \PY{k}{return} \PY{n}{response}\PY{o}{.}\PY{n}{choices}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{message}\PY{o}{.}\PY{n}{content}\PY{o}{.}\PY{n}{strip}\PY{p}{(}\PY{p}{)}
+    \PY{k}{except} \PY{n+ne}{Exception} \PY{k}{as} \PY{n}{e}\PY{p}{:}
+        \PY{k}{return} \PY{n+nb}{str}\PY{p}{(}\PY{n}{e}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsection{Formatted response}\label{formatted-response}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{textwrap}
+
+\PY{k}{def} \PY{n+nf}{print\PYZus{}formatted\PYZus{}response}\PY{p}{(}\PY{n}{response}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} Define the width for wrapping the text}
+    \PY{n}{wrapper} \PY{o}{=} \PY{n}{textwrap}\PY{o}{.}\PY{n}{TextWrapper}\PY{p}{(}\PY{n}{width}\PY{o}{=}\PY{l+m+mi}{80}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Set to 80 columns wide, but adjust as needed}
+    \PY{n}{wrapped\PYZus{}text} \PY{o}{=} \PY{n}{wrapper}\PY{o}{.}\PY{n}{fill}\PY{p}{(}\PY{n}{text}\PY{o}{=}\PY{n}{response}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Print the formatted response with a header and footer}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Response:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{wrapped\PYZus{}text}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \# 3.The Data
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{db\PYZus{}records} \PY{o}{=} \PY{p}{[}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Retrieval Augmented Generation (RAG) represents a sophisticated hybrid approach in the field of artificial intelligence, particularly within the realm of natural language processing (NLP).}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{It innovatively combines the capabilities of neural network\PYZhy{}based language models with retrieval systems to enhance the generation of text, making it more accurate, informative, and contextually relevant.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{This methodology leverages the strengths of both generative and retrieval architectures to tackle complex tasks that require not only linguistic fluency but also factual correctness and depth of knowledge.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{At the core of Retrieval Augmented Generation (RAG) is a generative model, typically a transformer\PYZhy{}based neural network, similar to those used in models like GPT (Generative Pre\PYZhy{}trained Transformer) or BERT (Bidirectional Encoder Representations from Transformers).}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{This component is responsible for producing coherent and contextually appropriate language outputs based on a mixture of input prompts and additional information fetched by the retrieval component.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Complementing the language model is the retrieval system, which is usually built on a database of documents or a corpus of texts.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{This system uses techniques from information retrieval to find and fetch documents that are relevant to the input query or prompt.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The mechanism of relevance determination can range from simple keyword matching to more complex semantic search algorithms which interpret the meaning behind the query to find the best matches.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{This component merges the outputs from the language model and the retrieval system.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{It effectively synthesizes the raw data fetched by the retrieval system into the generative process of the language model.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The integrator ensures that the information from the retrieval system is seamlessly incorporated into the final text output, enhancing the model}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{s ability to generate responses that are not only fluent and grammatically correct but also rich in factual details and context\PYZhy{}specific nuances.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{When a query or prompt is received, the system first processes it to understand the requirement or the context.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Based on the processed query, the retrieval system searches through its database to find relevant documents or information snippets.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{This retrieval is guided by the similarity of content in the documents to the query, which can be determined through various techniques like vector embeddings or semantic similarity measures.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The retrieved documents are then fed into the language model.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{In some implementations, this integration happens at the token level, where the model can access and incorporate specific pieces of information from the retrieved texts dynamically as it generates each part of the response.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The language model, now augmented with direct access to retrieved information, generates a response.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{This response is not only influenced by the training of the model but also by the specific facts and details contained in the retrieved documents, making it more tailored and accurate.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{By directly incorporating information from external sources, Retrieval Augmented Generation (RAG) models can produce responses that are more factual and relevant to the given query.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{This is particularly useful in domains like medical advice, technical support, and other areas where precision and up\PYZhy{}to\PYZhy{}date knowledge are crucial.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Retrieval Augmented Generation (RAG) systems can dynamically adapt to new information since they retrieve data in real\PYZhy{}time from their databases.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{This allows them to remain current with the latest knowledge and trends without needing frequent retraining.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{With access to a wide range of documents, Retrieval Augmented Generation (RAG) systems can provide detailed and nuanced answers that a standalone language model might not be capable of generating based solely on its pre\PYZhy{}trained knowledge.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{While Retrieval Augmented Generation (RAG) offers substantial benefits, it also comes with its challenges.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{These include the complexity of integrating retrieval and generation systems, the computational overhead associated with real\PYZhy{}time data retrieval, and the need for maintaining a large, up\PYZhy{}to\PYZhy{}date, and high\PYZhy{}quality database of retrievable texts.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Furthermore, ensuring the relevance and accuracy of the retrieved information remains a significant challenge, as does managing the potential for introducing biases or errors from the external sources.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{In summary, Retrieval Augmented Generation represents a significant advancement in the field of artificial intelligence, merging the best of retrieval\PYZhy{}based and generative technologies to create systems that not only understand and generate natural language but also deeply comprehend and utilize the vast amounts of information available in textual form.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{A RAG vector store is a database or dataset that contains vectorized data points.}\PY{l+s+s2}{\PYZdq{}}
+\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{textwrap}
+\PY{n}{paragraph} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ }\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{n}{db\PYZus{}records}\PY{p}{)}
+\PY{n}{wrapped\PYZus{}text} \PY{o}{=} \PY{n}{textwrap}\PY{o}{.}\PY{n}{fill}\PY{p}{(}\PY{n}{paragraph}\PY{p}{,} \PY{n}{width}\PY{o}{=}\PY{l+m+mi}{80}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{wrapped\PYZus{}text}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Retrieval Augmented Generation (RAG) represents a sophisticated hybrid approach
+in the field of artificial intelligence, particularly within the realm of
+natural language processing (NLP). It innovatively combines the capabilities of
+neural network-based language models with retrieval systems to enhance the
+generation of text, making it more accurate, informative, and contextually
+relevant. This methodology leverages the strengths of both generative and
+retrieval architectures to tackle complex tasks that require not only linguistic
+fluency but also factual correctness and depth of knowledge. At the core of
+Retrieval Augmented Generation (RAG) is a generative model, typically a
+transformer-based neural network, similar to those used in models like GPT
+(Generative Pre-trained Transformer) or BERT (Bidirectional Encoder
+Representations from Transformers). This component is responsible for producing
+coherent and contextually appropriate language outputs based on a mixture of
+input prompts and additional information fetched by the retrieval component.
+Complementing the language model is the retrieval system, which is usually built
+on a database of documents or a corpus of texts. This system uses techniques
+from information retrieval to find and fetch documents that are relevant to the
+input query or prompt. The mechanism of relevance determination can range from
+simple keyword matching to more complex semantic search algorithms which
+interpret the meaning behind the query to find the best matches. This component
+merges the outputs from the language model and the retrieval system. It
+effectively synthesizes the raw data fetched by the retrieval system into the
+generative process of the language model. The integrator ensures that the
+information from the retrieval system is seamlessly incorporated into the final
+text output, enhancing the model's ability to generate responses that are not
+only fluent and grammatically correct but also rich in factual details and
+context-specific nuances. When a query or prompt is received, the system first
+processes it to understand the requirement or the context. Based on the
+processed query, the retrieval system searches through its database to find
+relevant documents or information snippets. This retrieval is guided by the
+similarity of content in the documents to the query, which can be determined
+through various techniques like vector embeddings or semantic similarity
+measures. The retrieved documents are then fed into the language model. In some
+implementations, this integration happens at the token level, where the model
+can access and incorporate specific pieces of information from the retrieved
+texts dynamically as it generates each part of the response. The language model,
+now augmented with direct access to retrieved information, generates a response.
+This response is not only influenced by the training of the model but also by
+the specific facts and details contained in the retrieved documents, making it
+more tailored and accurate. By directly incorporating information from external
+sources, Retrieval Augmented Generation (RAG) models can produce responses that
+are more factual and relevant to the given query. This is particularly useful in
+domains like medical advice, technical support, and other areas where precision
+and up-to-date knowledge are crucial. Retrieval Augmented Generation (RAG)
+systems can dynamically adapt to new information since they retrieve data in
+real-time from their databases. This allows them to remain current with the
+latest knowledge and trends without needing frequent retraining. With access to
+a wide range of documents, Retrieval Augmented Generation (RAG) systems can
+provide detailed and nuanced answers that a standalone language model might not
+be capable of generating based solely on its pre-trained knowledge. While
+Retrieval Augmented Generation (RAG) offers substantial benefits, it also comes
+with its challenges. These include the complexity of integrating retrieval and
+generation systems, the computational overhead associated with real-time data
+retrieval, and the need for maintaining a large, up-to-date, and high-quality
+database of retrievable texts. Furthermore, ensuring the relevance and accuracy
+of the retrieved information remains a significant challenge, as does managing
+the potential for introducing biases or errors from the external sources. In
+summary, Retrieval Augmented Generation represents a significant advancement in
+the field of artificial intelligence, merging the best of retrieval-based and
+generative technologies to create systems that not only understand and generate
+natural language but also deeply comprehend and utilize the vast amounts of
+information available in textual form. A RAG vector store is a database or
+dataset that contains vectorized data points.
+    \end{Verbatim}
+
+    \section{4.The Query}\label{the-query}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{query} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{define a rag store}\PY{l+s+s2}{\PYZdq{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Generation without augmentation
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Call the function and print the result}
+\PY{n}{llm\PYZus{}response} \PY{o}{=} \PY{n}{call\PYZus{}llm\PYZus{}with\PYZus{}full\PYZus{}text}\PY{p}{(}\PY{n}{query}\PY{p}{)}
+\PY{n}{print\PYZus{}formatted\PYZus{}response}\PY{p}{(}\PY{n}{llm\PYZus{}response}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Response:
+---------------
+Certainly! The content you've provided seems to be a vertically arranged
+sequence of letters that, when read horizontally, spells out "define a rag
+store." Let's break down what this phrase could mean:  1. **Define**: This is a
+verb that means to explain the meaning of a word or concept. In this context, it
+suggests that we are being asked to provide a clear explanation or description
+of what a "rag store" is.  2. **A Rag Store**: This term likely refers to a type
+of retail establishment. Let's explore what a "rag store" might be:     -
+**Rag**: Traditionally, a "rag" is a piece of old, often torn or worn-out cloth.
+Rags are commonly used for cleaning or as material for crafting. In some
+contexts, "rags" can also refer to old or second-hand clothing.     - **Store**:
+This is a place where goods are sold to the public. It can range from a small
+shop to a large retail outlet.  3. **Rag Store**: Combining these two words, a
+"rag store" could be interpreted in a couple of ways:     - **Second-Hand
+Clothing Store**: A store that sells used clothing, often at a lower price than
+new items. These stores are popular for those looking for vintage or affordable
+clothing options.     - **Fabric or Textile Store**: A store that specializes in
+selling fabric remnants, scraps, or materials that can be used for sewing,
+quilting, or crafting. These stores might cater to hobbyists or professionals
+looking for unique or discounted fabric pieces.  In summary, a "rag store" is
+likely a retail establishment that deals with either second-hand clothing or
+fabric remnants. The exact nature of the store would depend on the specific
+focus of its inventory and the needs of its customers.
+---------------
+
+    \end{Verbatim}
+
+    \section{Part 2: Advanced Techniques and
+Evaluation}\label{part-2-advanced-techniques-and-evaluation}
+
+    \section{1.Retrieval Metrics}\label{retrieval-metrics}
+
+    \subsection{Cosine Similarity}\label{cosine-similarity}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{feature\PYZus{}extraction}\PY{n+nn}{.}\PY{n+nn}{text} \PY{k+kn}{import} \PY{n}{TfidfVectorizer}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{metrics}\PY{n+nn}{.}\PY{n+nn}{pairwise} \PY{k+kn}{import} \PY{n}{cosine\PYZus{}similarity}
+
+\PY{k}{def} \PY{n+nf}{calculate\PYZus{}cosine\PYZus{}similarity}\PY{p}{(}\PY{n}{text1}\PY{p}{,} \PY{n}{text2}\PY{p}{)}\PY{p}{:}
+    \PY{n}{vectorizer} \PY{o}{=} \PY{n}{TfidfVectorizer}\PY{p}{(}
+        \PY{n}{stop\PYZus{}words}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{english}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+        \PY{n}{use\PYZus{}idf}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}
+        \PY{n}{norm}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{l2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+        \PY{n}{ngram\PYZus{}range}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,}  \PY{c+c1}{\PYZsh{} Use unigrams and bigrams}
+        \PY{n}{sublinear\PYZus{}tf}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}   \PY{c+c1}{\PYZsh{} Apply sublinear TF scaling}
+        \PY{n}{analyzer}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{word}\PY{l+s+s1}{\PYZsq{}}      \PY{c+c1}{\PYZsh{} You could also experiment with \PYZsq{}char\PYZsq{} or \PYZsq{}char\PYZus{}wb\PYZsq{} for character\PYZhy{}level features}
+    \PY{p}{)}
+    \PY{n}{tfidf} \PY{o}{=} \PY{n}{vectorizer}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{p}{[}\PY{n}{text1}\PY{p}{,} \PY{n}{text2}\PY{p}{]}\PY{p}{)}
+    \PY{n}{similarity} \PY{o}{=} \PY{n}{cosine\PYZus{}similarity}\PY{p}{(}\PY{n}{tfidf}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{tfidf}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}
+    \PY{k}{return} \PY{n}{similarity}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsection{Enhanced Similarity}\label{enhanced-similarity}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{spacy}
+\PY{k+kn}{import} \PY{n+nn}{nltk}
+\PY{n}{nltk}\PY{o}{.}\PY{n}{download}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{wordnet}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{k+kn}{from} \PY{n+nn}{nltk}\PY{n+nn}{.}\PY{n+nn}{corpus} \PY{k+kn}{import} \PY{n}{wordnet}
+\PY{k+kn}{from} \PY{n+nn}{collections} \PY{k+kn}{import} \PY{n}{Counter}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+
+\PY{c+c1}{\PYZsh{} Load spaCy model}
+\PY{n}{nlp} \PY{o}{=} \PY{n}{spacy}\PY{o}{.}\PY{n}{load}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{en\PYZus{}core\PYZus{}web\PYZus{}sm}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{k}{def} \PY{n+nf}{get\PYZus{}synonyms}\PY{p}{(}\PY{n}{word}\PY{p}{)}\PY{p}{:}
+    \PY{n}{synonyms} \PY{o}{=} \PY{n+nb}{set}\PY{p}{(}\PY{p}{)}
+    \PY{k}{for} \PY{n}{syn} \PY{o+ow}{in} \PY{n}{wordnet}\PY{o}{.}\PY{n}{synsets}\PY{p}{(}\PY{n}{word}\PY{p}{)}\PY{p}{:}
+        \PY{k}{for} \PY{n}{lemma} \PY{o+ow}{in} \PY{n}{syn}\PY{o}{.}\PY{n}{lemmas}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+            \PY{n}{synonyms}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{lemma}\PY{o}{.}\PY{n}{name}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+    \PY{k}{return} \PY{n}{synonyms}
+
+\PY{k}{def} \PY{n+nf}{preprocess\PYZus{}text}\PY{p}{(}\PY{n}{text}\PY{p}{)}\PY{p}{:}
+    \PY{n}{doc} \PY{o}{=} \PY{n}{nlp}\PY{p}{(}\PY{n}{text}\PY{o}{.}\PY{n}{lower}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+    \PY{n}{lemmatized\PYZus{}words} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{k}{for} \PY{n}{token} \PY{o+ow}{in} \PY{n}{doc}\PY{p}{:}
+        \PY{k}{if} \PY{n}{token}\PY{o}{.}\PY{n}{is\PYZus{}stop} \PY{o+ow}{or} \PY{n}{token}\PY{o}{.}\PY{n}{is\PYZus{}punct}\PY{p}{:}
+            \PY{k}{continue}
+        \PY{n}{lemmatized\PYZus{}words}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{token}\PY{o}{.}\PY{n}{lemma\PYZus{}}\PY{p}{)}
+    \PY{k}{return} \PY{n}{lemmatized\PYZus{}words}
+
+\PY{k}{def} \PY{n+nf}{expand\PYZus{}with\PYZus{}synonyms}\PY{p}{(}\PY{n}{words}\PY{p}{)}\PY{p}{:}
+    \PY{n}{expanded\PYZus{}words} \PY{o}{=} \PY{n}{words}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+    \PY{k}{for} \PY{n}{word} \PY{o+ow}{in} \PY{n}{words}\PY{p}{:}
+        \PY{n}{expanded\PYZus{}words}\PY{o}{.}\PY{n}{extend}\PY{p}{(}\PY{n}{get\PYZus{}synonyms}\PY{p}{(}\PY{n}{word}\PY{p}{)}\PY{p}{)}
+    \PY{k}{return} \PY{n}{expanded\PYZus{}words}
+
+\PY{k}{def} \PY{n+nf}{calculate\PYZus{}enhanced\PYZus{}similarity}\PY{p}{(}\PY{n}{text1}\PY{p}{,} \PY{n}{text2}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} Preprocess and tokenize texts}
+    \PY{n}{words1} \PY{o}{=} \PY{n}{preprocess\PYZus{}text}\PY{p}{(}\PY{n}{text1}\PY{p}{)}
+    \PY{n}{words2} \PY{o}{=} \PY{n}{preprocess\PYZus{}text}\PY{p}{(}\PY{n}{text2}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Expand with synonyms}
+    \PY{n}{words1\PYZus{}expanded} \PY{o}{=} \PY{n}{expand\PYZus{}with\PYZus{}synonyms}\PY{p}{(}\PY{n}{words1}\PY{p}{)}
+    \PY{n}{words2\PYZus{}expanded} \PY{o}{=} \PY{n}{expand\PYZus{}with\PYZus{}synonyms}\PY{p}{(}\PY{n}{words2}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Count word frequencies}
+    \PY{n}{freq1} \PY{o}{=} \PY{n}{Counter}\PY{p}{(}\PY{n}{words1\PYZus{}expanded}\PY{p}{)}
+    \PY{n}{freq2} \PY{o}{=} \PY{n}{Counter}\PY{p}{(}\PY{n}{words2\PYZus{}expanded}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Create a set of all unique words}
+    \PY{n}{unique\PYZus{}words} \PY{o}{=} \PY{n+nb}{set}\PY{p}{(}\PY{n}{freq1}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{union}\PY{p}{(}\PY{n+nb}{set}\PY{p}{(}\PY{n}{freq2}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Create frequency vectors}
+    \PY{n}{vector1} \PY{o}{=} \PY{p}{[}\PY{n}{freq1}\PY{p}{[}\PY{n}{word}\PY{p}{]} \PY{k}{for} \PY{n}{word} \PY{o+ow}{in} \PY{n}{unique\PYZus{}words}\PY{p}{]}
+    \PY{n}{vector2} \PY{o}{=} \PY{p}{[}\PY{n}{freq2}\PY{p}{[}\PY{n}{word}\PY{p}{]} \PY{k}{for} \PY{n}{word} \PY{o+ow}{in} \PY{n}{unique\PYZus{}words}\PY{p}{]}
+
+    \PY{c+c1}{\PYZsh{} Convert lists to numpy arrays}
+    \PY{n}{vector1} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{vector1}\PY{p}{)}
+    \PY{n}{vector2} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{vector2}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Calculate cosine similarity}
+    \PY{n}{cosine\PYZus{}similarity} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{vector1}\PY{p}{,} \PY{n}{vector2}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{vector1}\PY{p}{)} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{vector2}\PY{p}{)}\PY{p}{)}
+
+    \PY{k}{return} \PY{n}{cosine\PYZus{}similarity}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[nltk\_data] Downloading package wordnet to
+[nltk\_data]     C:\textbackslash{}Users\textbackslash{}wb164718\textbackslash{}AppData\textbackslash{}Roaming\textbackslash{}nltk\_data{\ldots}
+[nltk\_data]   Package wordnet is already up-to-date!
+    \end{Verbatim}
+
+    \section{2.Naive RAG}\label{naive-rag}
+
+    \subsection{Keyword search and
+matching}\label{keyword-search-and-matching}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{find\PYZus{}best\PYZus{}match\PYZus{}keyword\PYZus{}search}\PY{p}{(}\PY{n}{query}\PY{p}{,} \PY{n}{db\PYZus{}records}\PY{p}{)}\PY{p}{:}
+    \PY{n}{best\PYZus{}score} \PY{o}{=} \PY{l+m+mi}{0}
+    \PY{n}{best\PYZus{}record} \PY{o}{=} \PY{k+kc}{None}
+
+    \PY{c+c1}{\PYZsh{} Split the query into individual keywords}
+    \PY{n}{query\PYZus{}keywords} \PY{o}{=} \PY{n+nb}{set}\PY{p}{(}\PY{n}{query}\PY{o}{.}\PY{n}{lower}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Iterate through each record in db\PYZus{}records}
+    \PY{k}{for} \PY{n}{record} \PY{o+ow}{in} \PY{n}{db\PYZus{}records}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} Split the record into keywords}
+        \PY{n}{record\PYZus{}keywords} \PY{o}{=} \PY{n+nb}{set}\PY{p}{(}\PY{n}{record}\PY{o}{.}\PY{n}{lower}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Calculate the number of common keywords}
+        \PY{n}{common\PYZus{}keywords} \PY{o}{=} \PY{n}{query\PYZus{}keywords}\PY{o}{.}\PY{n}{intersection}\PY{p}{(}\PY{n}{record\PYZus{}keywords}\PY{p}{)}
+        \PY{n}{current\PYZus{}score} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{common\PYZus{}keywords}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Update the best score and record if the current score is higher}
+        \PY{k}{if} \PY{n}{current\PYZus{}score} \PY{o}{\PYZgt{}} \PY{n}{best\PYZus{}score}\PY{p}{:}
+            \PY{n}{best\PYZus{}score} \PY{o}{=} \PY{n}{current\PYZus{}score}
+            \PY{n}{best\PYZus{}record} \PY{o}{=} \PY{n}{record}
+
+    \PY{k}{return} \PY{n}{best\PYZus{}score}\PY{p}{,} \PY{n}{best\PYZus{}record}
+
+\PY{c+c1}{\PYZsh{} Assuming \PYZsq{}query\PYZsq{} and \PYZsq{}db\PYZus{}records\PYZsq{} are defined in previous cells in your Colab notebook}
+\PY{n}{best\PYZus{}keyword\PYZus{}score}\PY{p}{,} \PY{n}{best\PYZus{}matching\PYZus{}record} \PY{o}{=} \PY{n}{find\PYZus{}best\PYZus{}match\PYZus{}keyword\PYZus{}search}\PY{p}{(}\PY{n}{query}\PY{p}{,} \PY{n}{db\PYZus{}records}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Best Keyword Score: }\PY{l+s+si}{\PYZob{}}\PY{n}{best\PYZus{}keyword\PYZus{}score}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{print\PYZus{}formatted\PYZus{}response}\PY{p}{(}\PY{n}{best\PYZus{}matching\PYZus{}record}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Best Keyword Score: 3
+Response:
+---------------
+A RAG vector store is a database or dataset that contains vectorized data
+points.
+---------------
+
+    \end{Verbatim}
+
+    \subsection{Metrics}\label{metrics}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Cosine Similarity}
+\PY{n}{score} \PY{o}{=} \PY{n}{calculate\PYZus{}cosine\PYZus{}similarity}\PY{p}{(}\PY{n}{query}\PY{p}{,} \PY{n}{best\PYZus{}matching\PYZus{}record}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Best Cosine Similarity Score: }\PY{l+s+si}{\PYZob{}}\PY{n}{score}\PY{l+s+si}{:}\PY{l+s+s2}{.3f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Best Cosine Similarity Score: 0.126
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Enhanced Similarity}
+\PY{n}{response} \PY{o}{=} \PY{n}{best\PYZus{}matching\PYZus{}record}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{query}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{response}\PY{p}{)}
+\PY{n}{similarity\PYZus{}score} \PY{o}{=} \PY{n}{calculate\PYZus{}enhanced\PYZus{}similarity}\PY{p}{(}\PY{n}{query}\PY{p}{,} \PY{n}{response}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Enhanced Similarity:, }\PY{l+s+si}{\PYZob{}}\PY{n}{similarity\PYZus{}score}\PY{l+s+si}{:}\PY{l+s+s2}{.3f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+define a rag store :  A RAG vector store is a database or dataset that contains
+vectorized data points.
+Enhanced Similarity:, 0.642
+    \end{Verbatim}
+
+    \subsection{Augmented input}\label{augmented-input}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{23}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{augmented\PYZus{}input}\PY{o}{=}\PY{n}{query}\PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{: }\PY{l+s+s2}{\PYZdq{}}\PY{o}{+} \PY{n}{best\PYZus{}matching\PYZus{}record}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{print\PYZus{}formatted\PYZus{}response}\PY{p}{(}\PY{n}{augmented\PYZus{}input}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Response:
+---------------
+define a rag store: A RAG vector store is a database or dataset that contains
+vectorized data points.
+---------------
+
+    \end{Verbatim}
+
+    \subsection{Generation}\label{generation}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Call the function and print the result}
+\PY{n}{llm\PYZus{}response} \PY{o}{=} \PY{n}{call\PYZus{}llm\PYZus{}with\PYZus{}full\PYZus{}text}\PY{p}{(}\PY{n}{augmented\PYZus{}input}\PY{p}{)}
+\PY{n}{print\PYZus{}formatted\PYZus{}response}\PY{p}{(}\PY{n}{llm\PYZus{}response}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Response:
+---------------
+An ARAG vector store, or more generally a vector store, is a specialized type of
+database or dataset designed to store and manage vectorized data points. Here's
+a detailed explanation of the concept:  1. **Vectorized Data Points**: In the
+context of machine learning and data science, data is often represented in the
+form of vectors. A vector is essentially an array of numbers that represents
+data in a numerical format. This transformation from raw data to numerical
+vectors is known as vectorization. For example, text data can be vectorized
+using techniques like word embeddings (e.g., Word2Vec, GloVe) or sentence
+embeddings (e.g., BERT).  2. **Purpose of a Vector Store**: The primary purpose
+of a vector store is to efficiently store, retrieve, and manage these vectorized
+data points. This is particularly useful in applications that require similarity
+search, such as recommendation systems, information retrieval, and clustering.
+3. **Similarity Search**: One of the key functionalities of a vector store is to
+perform similarity searches. This involves finding vectors that are similar to a
+given query vector. Similarity is often measured using distance metrics like
+Euclidean distance or cosine similarity. This capability is crucial for tasks
+like finding similar documents, images, or users based on their vector
+representations.  4. **Scalability and Performance**: Vector stores are
+optimized for handling large volumes of high-dimensional data. They are designed
+to be scalable and performant, allowing for fast retrieval of similar vectors
+even in datasets with millions of entries.  5. **Applications**: Vector stores
+are widely used in various applications, including:    - **Recommendation
+Systems**: To suggest products or content based on user preferences.    -
+**Natural Language Processing (NLP)**: For tasks like semantic search and
+document clustering.    - **Computer Vision**: To find similar images or
+objects.    - **Anomaly Detection**: To identify outliers in data by comparing
+vector representations.  6. **Examples of Vector Stores**: There are several
+tools and platforms that provide vector storage capabilities, such as FAISS
+(Facebook AI Similarity Search), Annoy (Approximate Nearest Neighbors Oh Yeah),
+and Elasticsearch with its vector search capabilities.  In summary, an ARAG
+vector store is a crucial component in modern data-driven applications, enabling
+efficient handling and retrieval of vectorized data for various analytical and
+predictive tasks.
+---------------
+
+    \end{Verbatim}
+
+    \section{3.Advanced RAG}\label{advanced-rag}
+
+    \subsection{3.1.Vector search}\label{vector-search}
+
+    \subsubsection{Search function}\label{search-function}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{28}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{find\PYZus{}best\PYZus{}match}\PY{p}{(}\PY{n}{text\PYZus{}input}\PY{p}{,} \PY{n}{records}\PY{p}{)}\PY{p}{:}
+    \PY{n}{best\PYZus{}score} \PY{o}{=} \PY{l+m+mi}{0}
+    \PY{n}{best\PYZus{}record} \PY{o}{=} \PY{k+kc}{None}
+    \PY{k}{for} \PY{n}{record} \PY{o+ow}{in} \PY{n}{records}\PY{p}{:}
+        \PY{n}{current\PYZus{}score} \PY{o}{=} \PY{n}{calculate\PYZus{}cosine\PYZus{}similarity}\PY{p}{(}\PY{n}{text\PYZus{}input}\PY{p}{,} \PY{n}{record}\PY{p}{)}
+        \PY{k}{if} \PY{n}{current\PYZus{}score} \PY{o}{\PYZgt{}} \PY{n}{best\PYZus{}score}\PY{p}{:}
+            \PY{n}{best\PYZus{}score} \PY{o}{=} \PY{n}{current\PYZus{}score}
+            \PY{n}{best\PYZus{}record} \PY{o}{=} \PY{n}{record}
+    \PY{k}{return} \PY{n}{best\PYZus{}score}\PY{p}{,} \PY{n}{best\PYZus{}record}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{29}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{best\PYZus{}similarity\PYZus{}score}\PY{p}{,} \PY{n}{best\PYZus{}matching\PYZus{}record} \PY{o}{=} \PY{n}{find\PYZus{}best\PYZus{}match}\PY{p}{(}\PY{n}{query}\PY{p}{,} \PY{n}{db\PYZus{}records}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{30}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{print\PYZus{}formatted\PYZus{}response}\PY{p}{(}\PY{n}{best\PYZus{}matching\PYZus{}record}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Response:
+---------------
+A RAG vector store is a database or dataset that contains vectorized data
+points.
+---------------
+
+    \end{Verbatim}
+
+    \subsubsection{Metrics}\label{metrics}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{31}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Best Cosine Similarity Score: }\PY{l+s+si}{\PYZob{}}\PY{n}{best\PYZus{}similarity\PYZus{}score}\PY{l+s+si}{:}\PY{l+s+s2}{.3f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Best Cosine Similarity Score: 0.126
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{32}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Enhanced Similarity}
+\PY{n}{response} \PY{o}{=} \PY{n}{best\PYZus{}matching\PYZus{}record}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{query}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{response}\PY{p}{)}
+\PY{n}{similarity\PYZus{}score} \PY{o}{=} \PY{n}{calculate\PYZus{}enhanced\PYZus{}similarity}\PY{p}{(}\PY{n}{query}\PY{p}{,} \PY{n}{best\PYZus{}matching\PYZus{}record}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Enhanced Similarity:, }\PY{l+s+si}{\PYZob{}}\PY{n}{similarity\PYZus{}score}\PY{l+s+si}{:}\PY{l+s+s2}{.3f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+define a rag store :  A RAG vector store is a database or dataset that contains
+vectorized data points.
+Enhanced Similarity:, 0.642
+    \end{Verbatim}
+
+    \subsubsection{Augmented input}\label{augmented-input}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{33}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{augmented\PYZus{}input}\PY{o}{=}\PY{n}{query}\PY{o}{+}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{: }\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n}{best\PYZus{}matching\PYZus{}record}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{34}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{print\PYZus{}formatted\PYZus{}response}\PY{p}{(}\PY{n}{augmented\PYZus{}input}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Response:
+---------------
+define a rag store: A RAG vector store is a database or dataset that contains
+vectorized data points.
+---------------
+
+    \end{Verbatim}
+
+    \subsubsection{Generation}\label{generation}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{35}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Call the function and print the result}
+\PY{n}{llm\PYZus{}response} \PY{o}{=} \PY{n}{call\PYZus{}llm\PYZus{}with\PYZus{}full\PYZus{}text}\PY{p}{(}\PY{n}{augmented\PYZus{}input}\PY{p}{)}
+\PY{n}{print\PYZus{}formatted\PYZus{}response}\PY{p}{(}\PY{n}{llm\PYZus{}response}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Response:
+---------------
+An ARAG vector store, or more generally a vector store, is a specialized type of
+database or dataset designed to store and manage vectorized data points. Here's
+a more detailed explanation:  1. **Vectorized Data Points**: In the context of
+machine learning and data science, data is often transformed into a numerical
+format known as vectors. These vectors are essentially arrays of numbers that
+represent data in a way that algorithms can process. For example, in natural
+language processing, words or sentences can be converted into vectors using
+techniques like word embeddings (e.g., Word2Vec, GloVe) or sentence embeddings.
+2. **Purpose of a Vector Store**: The primary purpose of a vector store is to
+efficiently store, retrieve, and manage these vectorized representations. This
+is crucial for tasks that involve similarity search, clustering, or any
+operation that requires comparing vectors to find patterns or relationships.  3.
+**Applications**: Vector stores are widely used in various applications,
+including:    - **Recommendation Systems**: By storing user preferences and item
+features as vectors, systems can recommend items that are similar to those a
+user has liked in the past.    - **Image and Video Retrieval**: Vectors can
+represent visual features, allowing for efficient searching and retrieval of
+similar images or videos.    - **Natural Language Processing**: In NLP, vector
+stores can be used to find semantically similar texts or to perform tasks like
+document clustering.  4. **Key Features**:    - **Scalability**: Vector stores
+are designed to handle large volumes of data, making them suitable for big data
+applications.    - **Efficiency**: They provide fast retrieval times, which is
+essential for real-time applications.    - **Similarity Search**: They often
+include algorithms for nearest neighbor search, which is used to find vectors
+that are closest to a given query vector.  5. **Examples of Vector Stores**:
+There are several tools and platforms that provide vector storage capabilities,
+such as FAISS (Facebook AI Similarity Search), Annoy (Approximate Nearest
+Neighbors Oh Yeah), and Elasticsearch with its vector search capabilities.  In
+summary, an ARAG vector store is a crucial component in modern data-driven
+applications, enabling efficient handling and processing of vectorized data for
+various analytical and operational purposes.
+---------------
+
+    \end{Verbatim}
+
+    \subsection{3.2.Index-based search}\label{index-based-search}
+
+    \subsubsection{Search Function}\label{search-function}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{36}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{feature\PYZus{}extraction}\PY{n+nn}{.}\PY{n+nn}{text} \PY{k+kn}{import} \PY{n}{TfidfVectorizer}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{metrics}\PY{n+nn}{.}\PY{n+nn}{pairwise} \PY{k+kn}{import} \PY{n}{cosine\PYZus{}similarity}
+
+\PY{k}{def} \PY{n+nf}{setup\PYZus{}vectorizer}\PY{p}{(}\PY{n}{records}\PY{p}{)}\PY{p}{:}
+    \PY{n}{vectorizer} \PY{o}{=} \PY{n}{TfidfVectorizer}\PY{p}{(}\PY{p}{)}
+    \PY{n}{tfidf\PYZus{}matrix} \PY{o}{=} \PY{n}{vectorizer}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{records}\PY{p}{)}
+    \PY{k}{return} \PY{n}{vectorizer}\PY{p}{,} \PY{n}{tfidf\PYZus{}matrix}
+
+\PY{k}{def} \PY{n+nf}{find\PYZus{}best\PYZus{}match}\PY{p}{(}\PY{n}{query}\PY{p}{,} \PY{n}{vectorizer}\PY{p}{,} \PY{n}{tfidf\PYZus{}matrix}\PY{p}{)}\PY{p}{:}
+    \PY{n}{query\PYZus{}tfidf} \PY{o}{=} \PY{n}{vectorizer}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{p}{[}\PY{n}{query}\PY{p}{]}\PY{p}{)}
+    \PY{n}{similarities} \PY{o}{=} \PY{n}{cosine\PYZus{}similarity}\PY{p}{(}\PY{n}{query\PYZus{}tfidf}\PY{p}{,} \PY{n}{tfidf\PYZus{}matrix}\PY{p}{)}
+    \PY{n}{best\PYZus{}index} \PY{o}{=} \PY{n}{similarities}\PY{o}{.}\PY{n}{argmax}\PY{p}{(}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Get the index of the highest similarity score}
+    \PY{n}{best\PYZus{}score} \PY{o}{=} \PY{n}{similarities}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{best\PYZus{}index}\PY{p}{]}
+    \PY{k}{return} \PY{n}{best\PYZus{}score}\PY{p}{,} \PY{n}{best\PYZus{}index}
+
+\PY{n}{vectorizer}\PY{p}{,} \PY{n}{tfidf\PYZus{}matrix} \PY{o}{=} \PY{n}{setup\PYZus{}vectorizer}\PY{p}{(}\PY{n}{db\PYZus{}records}\PY{p}{)}
+
+\PY{n}{best\PYZus{}similarity\PYZus{}score}\PY{p}{,} \PY{n}{best\PYZus{}index} \PY{o}{=} \PY{n}{find\PYZus{}best\PYZus{}match}\PY{p}{(}\PY{n}{query}\PY{p}{,} \PY{n}{vectorizer}\PY{p}{,} \PY{n}{tfidf\PYZus{}matrix}\PY{p}{)}
+\PY{n}{best\PYZus{}matching\PYZus{}record} \PY{o}{=} \PY{n}{db\PYZus{}records}\PY{p}{[}\PY{n}{best\PYZus{}index}\PY{p}{]}
+
+\PY{n}{print\PYZus{}formatted\PYZus{}response}\PY{p}{(}\PY{n}{best\PYZus{}matching\PYZus{}record}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Response:
+---------------
+A RAG vector store is a database or dataset that contains vectorized data
+points.
+---------------
+
+    \end{Verbatim}
+
+    \subsubsection{Metrics}\label{metrics}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{37}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Cosine Similarity}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Best Cosine Similarity Score: }\PY{l+s+si}{\PYZob{}}\PY{n}{best\PYZus{}similarity\PYZus{}score}\PY{l+s+si}{:}\PY{l+s+s2}{.3f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{print\PYZus{}formatted\PYZus{}response}\PY{p}{(}\PY{n}{best\PYZus{}matching\PYZus{}record}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Best Cosine Similarity Score: 0.407
+Response:
+---------------
+A RAG vector store is a database or dataset that contains vectorized data
+points.
+---------------
+
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{38}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Enhanced Similarity}
+\PY{n}{response} \PY{o}{=} \PY{n}{best\PYZus{}matching\PYZus{}record}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{query}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{response}\PY{p}{)}
+\PY{n}{similarity\PYZus{}score} \PY{o}{=} \PY{n}{calculate\PYZus{}enhanced\PYZus{}similarity}\PY{p}{(}\PY{n}{query}\PY{p}{,} \PY{n}{response}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Enhanced Similarity:, }\PY{l+s+si}{\PYZob{}}\PY{n}{similarity\PYZus{}score}\PY{l+s+si}{:}\PY{l+s+s2}{.3f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+define a rag store :  A RAG vector store is a database or dataset that contains
+vectorized data points.
+Enhanced Similarity:, 0.642
+    \end{Verbatim}
+
+    Feature extraction
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{39}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{feature\PYZus{}extraction}\PY{n+nn}{.}\PY{n+nn}{text} \PY{k+kn}{import} \PY{n}{TfidfVectorizer}
+
+\PY{k}{def} \PY{n+nf}{setup\PYZus{}vectorizer}\PY{p}{(}\PY{n}{records}\PY{p}{)}\PY{p}{:}
+    \PY{n}{vectorizer} \PY{o}{=} \PY{n}{TfidfVectorizer}\PY{p}{(}\PY{p}{)}
+    \PY{n}{tfidf\PYZus{}matrix} \PY{o}{=} \PY{n}{vectorizer}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{records}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Convert the TF\PYZhy{}IDF matrix to a DataFrame for display purposes}
+    \PY{n}{tfidf\PYZus{}df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{tfidf\PYZus{}matrix}\PY{o}{.}\PY{n}{toarray}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{columns}\PY{o}{=}\PY{n}{vectorizer}\PY{o}{.}\PY{n}{get\PYZus{}feature\PYZus{}names\PYZus{}out}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Display the DataFrame}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{tfidf\PYZus{}df}\PY{p}{)}
+
+    \PY{k}{return} \PY{n}{vectorizer}\PY{p}{,} \PY{n}{tfidf\PYZus{}matrix}
+
+\PY{n}{vectorizer}\PY{p}{,} \PY{n}{tfidf\PYZus{}matrix} \PY{o}{=} \PY{n}{setup\PYZus{}vectorizer}\PY{p}{(}\PY{n}{db\PYZus{}records}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+     ability    access  accuracy  {\ldots}      with    within   without
+0   0.000000  0.000000  0.000000  {\ldots}  0.000000  0.260582  0.000000
+1   0.000000  0.000000  0.000000  {\ldots}  0.160278  0.000000  0.000000
+2   0.000000  0.000000  0.000000  {\ldots}  0.000000  0.000000  0.000000
+3   0.000000  0.000000  0.000000  {\ldots}  0.000000  0.000000  0.000000
+4   0.000000  0.000000  0.000000  {\ldots}  0.000000  0.000000  0.000000
+5   0.000000  0.000000  0.000000  {\ldots}  0.000000  0.000000  0.000000
+6   0.000000  0.000000  0.000000  {\ldots}  0.000000  0.000000  0.000000
+7   0.000000  0.000000  0.000000  {\ldots}  0.000000  0.000000  0.000000
+8   0.000000  0.000000  0.000000  {\ldots}  0.000000  0.000000  0.000000
+9   0.000000  0.000000  0.000000  {\ldots}  0.000000  0.000000  0.000000
+10  0.186734  0.000000  0.000000  {\ldots}  0.000000  0.000000  0.000000
+11  0.000000  0.000000  0.000000  {\ldots}  0.000000  0.000000  0.000000
+12  0.000000  0.000000  0.000000  {\ldots}  0.000000  0.000000  0.000000
+13  0.000000  0.000000  0.000000  {\ldots}  0.000000  0.000000  0.000000
+14  0.000000  0.000000  0.000000  {\ldots}  0.000000  0.000000  0.000000
+15  0.000000  0.172624  0.000000  {\ldots}  0.000000  0.000000  0.000000
+16  0.000000  0.317970  0.000000  {\ldots}  0.258278  0.000000  0.000000
+17  0.000000  0.000000  0.000000  {\ldots}  0.000000  0.000000  0.000000
+18  0.000000  0.000000  0.000000  {\ldots}  0.000000  0.000000  0.000000
+19  0.000000  0.000000  0.000000  {\ldots}  0.000000  0.000000  0.000000
+20  0.000000  0.000000  0.000000  {\ldots}  0.000000  0.000000  0.000000
+21  0.000000  0.000000  0.000000  {\ldots}  0.192110  0.000000  0.291503
+22  0.000000  0.174772  0.000000  {\ldots}  0.141963  0.000000  0.000000
+23  0.000000  0.000000  0.000000  {\ldots}  0.217033  0.000000  0.000000
+24  0.000000  0.000000  0.000000  {\ldots}  0.134513  0.000000  0.000000
+25  0.000000  0.000000  0.228743  {\ldots}  0.000000  0.000000  0.000000
+26  0.000000  0.000000  0.000000  {\ldots}  0.000000  0.000000  0.000000
+27  0.000000  0.000000  0.000000  {\ldots}  0.000000  0.000000  0.000000
+
+[28 rows x 297 columns]
+    \end{Verbatim}
+
+    \subsubsection{Augmented input}\label{augmented-input}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{40}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{augmented\PYZus{}input}\PY{o}{=}\PY{n}{query}\PY{o}{+}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{: }\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n}{best\PYZus{}matching\PYZus{}record}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{41}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{print\PYZus{}formatted\PYZus{}response}\PY{p}{(}\PY{n}{augmented\PYZus{}input}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Response:
+---------------
+define a rag store: A RAG vector store is a database or dataset that contains
+vectorized data points.
+---------------
+
+    \end{Verbatim}
+
+    \subsubsection{Generation}\label{generation}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{42}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Call the function and print the result}
+\PY{n}{llm\PYZus{}response} \PY{o}{=} \PY{n}{call\PYZus{}llm\PYZus{}with\PYZus{}full\PYZus{}text}\PY{p}{(}\PY{n}{augmented\PYZus{}input}\PY{p}{)}
+\PY{n}{print\PYZus{}formatted\PYZus{}response}\PY{p}{(}\PY{n}{llm\PYZus{}response}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Response:
+---------------
+Certainly! Let's break down the concept of an "ARAG vector store" and what it
+means to have a database or dataset containing vectorized data points.  \#\#\# ARAG
+Vector Store  1. **ARAG**: While "ARAG" isn't a standard term in the context of
+vector stores, it might refer to a specific implementation, framework, or
+proprietary system related to vector storage. Without additional context, it's
+difficult to define "ARAG" precisely, but it could be an acronym or a brand name
+associated with a particular vector storage solution.  2. **Vector Store**: A
+vector store is a specialized type of database or dataset designed to store and
+manage vectorized data points. Vectors are mathematical representations of data,
+often used in machine learning and data science to represent features of data
+points in a numerical format.  \#\#\# Vectorized Data Points  1. **Vectors**: In
+the context of data storage, vectors are arrays of numbers that represent data
+in a multi-dimensional space. Each dimension corresponds to a feature or
+attribute of the data. For example, in natural language processing, words or
+sentences can be represented as vectors using techniques like word embeddings
+(e.g., Word2Vec, GloVe) or sentence embeddings.  2. **Vectorization**: This is
+the process of converting data into a vector format. For instance, text data can
+be transformed into vectors using various algorithms that capture semantic
+meaning, allowing for operations like similarity search, clustering, and
+classification.  3. **Applications**: Vector stores are crucial in applications
+that require efficient similarity search and retrieval. They are used in
+recommendation systems, image and video retrieval, natural language processing,
+and more. By storing data as vectors, these systems can quickly compute
+distances or similarities between data points, enabling fast and accurate
+retrieval.  \#\#\# Database or Dataset  1. **Database**: In this context, a
+database refers to a structured collection of data that is stored and accessed
+electronically. A vector database is optimized for storing and querying vector
+data, often providing specialized indexing techniques to speed up similarity
+searches.  2. **Dataset**: A dataset is a collection of data points that are
+typically used for analysis or training machine learning models. When we talk
+about a vector dataset, we refer to a collection of data points that have been
+transformed into vector format, ready for use in various computational tasks.
+In summary, an "ARAG vector store" is likely a system or framework designed to
+efficiently store and manage vectorized data points, enabling fast retrieval and
+analysis of data based on their vector representations. This is particularly
+useful in fields that require handling large volumes of data with complex
+relationships, such as machine learning, artificial intelligence, and data
+science.
+---------------
+
+    \end{Verbatim}
+
+    \section{4.Modular RAG}\label{modular-rag}
+
+Modular RAG can combine methods. For example:
+
+\textbf{keyword search}:Searches through each document to find the one
+that best matches the keyword(s).
+
+\textbf{vector search}: Searches through each document and calculates
+similarity.
+
+\textbf{indexed search}: Uses a precomputed index (TF-IDF matrix) to
+compute cosine similarities.
+
+    \textbf{October 25, 2025 update}
+
+\texttt{self.documents} is initialized in the fit method to hold the
+records used for searching and enable the \texttt{keyword\_search}
+function to access them without error.
+
+\textbf{Note on Vector search}
+
+In this case, the \texttt{def\ vector\_search(self,\ query):} uses
+\texttt{tfidf\_matrix}to increase the vector search performance.
+
+The \texttt{def\ vector\_search(self,\ query):} function could use a
+brute-force method as implemented in
+\texttt{Section\ 3.1.Vector\ search} of this notebook.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{43}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{feature\PYZus{}extraction}\PY{n+nn}{.}\PY{n+nn}{text} \PY{k+kn}{import} \PY{n}{TfidfVectorizer}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{metrics}\PY{n+nn}{.}\PY{n+nn}{pairwise} \PY{k+kn}{import} \PY{n}{cosine\PYZus{}similarity}
+
+\PY{k}{class} \PY{n+nc}{RetrievalComponent}\PY{p}{:}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{method}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{vector}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{method} \PY{o}{=} \PY{n}{method}
+        \PY{k}{if} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{method} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{vector}\PY{l+s+s1}{\PYZsq{}} \PY{o+ow}{or} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{method} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{indexed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{vectorizer} \PY{o}{=} \PY{n}{TfidfVectorizer}\PY{p}{(}\PY{p}{)}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{tfidf\PYZus{}matrix} \PY{o}{=} \PY{k+kc}{None}
+
+    \PY{k}{def} \PY{n+nf}{fit}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{records}\PY{p}{)}\PY{p}{:}
+      \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{documents} \PY{o}{=} \PY{n}{records}  \PY{c+c1}{\PYZsh{} Initialize self.documents here}
+      \PY{k}{if} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{method} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{vector}\PY{l+s+s1}{\PYZsq{}} \PY{o+ow}{or} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{method} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{indexed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{tfidf\PYZus{}matrix} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{vectorizer}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{records}\PY{p}{)}
+
+    \PY{k}{def} \PY{n+nf}{retrieve}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{query}\PY{p}{)}\PY{p}{:}
+        \PY{k}{if} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{method} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{keyword}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}
+            \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{keyword\PYZus{}search}\PY{p}{(}\PY{n}{query}\PY{p}{)}
+        \PY{k}{elif} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{method} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{vector}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}
+            \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{vector\PYZus{}search}\PY{p}{(}\PY{n}{query}\PY{p}{)}
+        \PY{k}{elif} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{method} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{indexed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}
+            \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{indexed\PYZus{}search}\PY{p}{(}\PY{n}{query}\PY{p}{)}
+
+    \PY{k}{def} \PY{n+nf}{keyword\PYZus{}search}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{query}\PY{p}{)}\PY{p}{:}
+        \PY{n}{best\PYZus{}score} \PY{o}{=} \PY{l+m+mi}{0}
+        \PY{n}{best\PYZus{}record} \PY{o}{=} \PY{k+kc}{None}
+        \PY{n}{query\PYZus{}keywords} \PY{o}{=} \PY{n+nb}{set}\PY{p}{(}\PY{n}{query}\PY{o}{.}\PY{n}{lower}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+        \PY{k}{for} \PY{n}{index}\PY{p}{,} \PY{n}{doc} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{documents}\PY{p}{)}\PY{p}{:}
+            \PY{n}{doc\PYZus{}keywords} \PY{o}{=} \PY{n+nb}{set}\PY{p}{(}\PY{n}{doc}\PY{o}{.}\PY{n}{lower}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+            \PY{n}{common\PYZus{}keywords} \PY{o}{=} \PY{n}{query\PYZus{}keywords}\PY{o}{.}\PY{n}{intersection}\PY{p}{(}\PY{n}{doc\PYZus{}keywords}\PY{p}{)}
+            \PY{n}{score} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{common\PYZus{}keywords}\PY{p}{)}
+            \PY{k}{if} \PY{n}{score} \PY{o}{\PYZgt{}} \PY{n}{best\PYZus{}score}\PY{p}{:}
+                \PY{n}{best\PYZus{}score} \PY{o}{=} \PY{n}{score}
+                \PY{n}{best\PYZus{}record} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{documents}\PY{p}{[}\PY{n}{index}\PY{p}{]}
+        \PY{k}{return} \PY{n}{best\PYZus{}record}
+
+    \PY{k}{def} \PY{n+nf}{vector\PYZus{}search}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{query}\PY{p}{)}\PY{p}{:}
+        \PY{n}{query\PYZus{}tfidf} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{vectorizer}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{p}{[}\PY{n}{query}\PY{p}{]}\PY{p}{)}
+        \PY{n}{similarities} \PY{o}{=} \PY{n}{cosine\PYZus{}similarity}\PY{p}{(}\PY{n}{query\PYZus{}tfidf}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{tfidf\PYZus{}matrix}\PY{p}{)}
+        \PY{n}{best\PYZus{}index} \PY{o}{=} \PY{n}{similarities}\PY{o}{.}\PY{n}{argmax}\PY{p}{(}\PY{p}{)}
+        \PY{k}{return} \PY{n}{db\PYZus{}records}\PY{p}{[}\PY{n}{best\PYZus{}index}\PY{p}{]}
+
+    \PY{k}{def} \PY{n+nf}{indexed\PYZus{}search}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{query}\PY{p}{)}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} Assuming the tfidf\PYZus{}matrix is precomputed and stored}
+        \PY{n}{query\PYZus{}tfidf} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{vectorizer}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{p}{[}\PY{n}{query}\PY{p}{]}\PY{p}{)}
+        \PY{n}{similarities} \PY{o}{=} \PY{n}{cosine\PYZus{}similarity}\PY{p}{(}\PY{n}{query\PYZus{}tfidf}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{tfidf\PYZus{}matrix}\PY{p}{)}
+        \PY{n}{best\PYZus{}index} \PY{o}{=} \PY{n}{similarities}\PY{o}{.}\PY{n}{argmax}\PY{p}{(}\PY{p}{)}
+        \PY{k}{return} \PY{n}{db\PYZus{}records}\PY{p}{[}\PY{n}{best\PYZus{}index}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsubsection{Modular RAG Strategies}\label{modular-rag-strategies}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{44}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Usage example}
+\PY{n}{retrieval} \PY{o}{=} \PY{n}{RetrievalComponent}\PY{p}{(}\PY{n}{method}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{vector}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Choose from \PYZsq{}keyword\PYZsq{}, \PYZsq{}vector\PYZsq{}, \PYZsq{}indexed\PYZsq{}}
+\PY{n}{retrieval}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{db\PYZus{}records}\PY{p}{)}
+\PY{n}{best\PYZus{}matching\PYZus{}record} \PY{o}{=} \PY{n}{retrieval}\PY{o}{.}\PY{n}{retrieve}\PY{p}{(}\PY{n}{query}\PY{p}{)}
+
+\PY{n}{print\PYZus{}formatted\PYZus{}response}\PY{p}{(}\PY{n}{best\PYZus{}matching\PYZus{}record}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Response:
+---------------
+A RAG vector store is a database or dataset that contains vectorized data
+points.
+---------------
+
+    \end{Verbatim}
+
+    \subsubsection{Metrics}\label{metrics}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{45}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Cosine Similarity}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Best Cosine Similarity Score: }\PY{l+s+si}{\PYZob{}}\PY{n}{best\PYZus{}similarity\PYZus{}score}\PY{l+s+si}{:}\PY{l+s+s2}{.3f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{print\PYZus{}formatted\PYZus{}response}\PY{p}{(}\PY{n}{best\PYZus{}matching\PYZus{}record}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Best Cosine Similarity Score: 0.407
+Response:
+---------------
+A RAG vector store is a database or dataset that contains vectorized data
+points.
+---------------
+
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{46}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Enhanced Similarity}
+\PY{n}{response} \PY{o}{=} \PY{n}{best\PYZus{}matching\PYZus{}record}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{query}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{response}\PY{p}{)}
+\PY{n}{similarity\PYZus{}score} \PY{o}{=} \PY{n}{calculate\PYZus{}enhanced\PYZus{}similarity}\PY{p}{(}\PY{n}{query}\PY{p}{,} \PY{n}{response}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Enhanced Similarity:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{similarity\PYZus{}score}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+define a rag store :  A RAG vector store is a database or dataset that contains
+vectorized data points.
+Enhanced Similarity: 0.641582812483307
+    \end{Verbatim}
+
+    \subsubsection{Augmented Input}\label{augmented-input}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{47}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{augmented\PYZus{}input}\PY{o}{=}\PY{n}{query}\PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}\PY{o}{+} \PY{n}{best\PYZus{}matching\PYZus{}record}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{48}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{print\PYZus{}formatted\PYZus{}response}\PY{p}{(}\PY{n}{augmented\PYZus{}input}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Response:
+---------------
+define a rag store A RAG vector store is a database or dataset that contains
+vectorized data points.
+---------------
+
+    \end{Verbatim}
+
+    \subsubsection{Generation}\label{generation}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{49}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Call the function and print the result}
+\PY{n}{llm\PYZus{}response} \PY{o}{=} \PY{n}{call\PYZus{}llm\PYZus{}with\PYZus{}full\PYZus{}text}\PY{p}{(}\PY{n}{augmented\PYZus{}input}\PY{p}{)}
+\PY{n}{print\PYZus{}formatted\PYZus{}response}\PY{p}{(}\PY{n}{llm\PYZus{}response}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Response:
+---------------
+An "ARAG vector store" refers to a specialized type of database or dataset
+designed to store and manage vectorized data points. Let's break down the
+concept further:  1. **Vectorized Data Points**: In the context of data science
+and machine learning, vectorization is the process of converting data into a
+numerical format that can be easily processed by algorithms. Each data point is
+represented as a vector, which is essentially an array of numbers. These vectors
+can represent various types of data, such as text, images, or any other form of
+information that can be numerically encoded.  2. **Purpose of a Vector Store**:
+The primary purpose of a vector store is to efficiently store and retrieve these
+vectorized data points. This is particularly useful in applications that require
+fast similarity searches, such as recommendation systems, natural language
+processing tasks, and image recognition. By storing data in a vectorized form,
+it becomes easier to perform operations like finding the nearest neighbors or
+clustering similar data points.  3. **ARAG Vector Store**: While the term "ARAG"
+is not widely recognized in the context of vector stores, it could be a specific
+implementation or a proprietary system developed by a particular organization or
+for a specific use case. The key aspect of an ARAG vector store would be its
+ability to handle and manage vectorized data efficiently.  4. **Applications**:
+Vector stores are crucial in various applications, including:    - **Search
+Engines**: To improve search results by finding documents or images similar to a
+query.    - **Recommendation Systems**: To suggest products or content based on
+user preferences and behavior.    - **Natural Language Processing**: To process
+and analyze text data by converting words or sentences into vectors.    -
+**Computer Vision**: To recognize and categorize images by analyzing their
+vector representations.  In summary, an ARAG vector store is a system designed
+to store and manage data in a vectorized format, enabling efficient retrieval
+and analysis of data points for various applications.
+---------------
+
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
